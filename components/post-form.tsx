@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/form';
 import { Textarea } from './ui/textarea';
 import { z } from 'zod';
+import { createPost } from '@/app/actions/createPost';
 
 const PostForm = () => {
   const form = useForm<z.infer<typeof PostSchema>>({
@@ -25,7 +26,7 @@ const PostForm = () => {
   });
 
   function onSubmit(values: z.infer<typeof PostSchema>) {
-    console.log(values);
+    createPost(values);
   }
   return (
     <Form {...form}>
