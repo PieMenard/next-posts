@@ -7,17 +7,19 @@ import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from '@/components/ui/form';
 import { Textarea } from './ui/textarea';
 import { z } from 'zod';
 import { createPost } from '@/app/actions/createPost';
+import { useToast } from '@/components/ui/use-toast';
+import { useState } from 'react';
 
 const PostForm = () => {
+  const { toast } = useToast();
+  const [success, setSuccess] = useState<string | undefined>('');
   const form = useForm<z.infer<typeof PostSchema>>({
     resolver: zodResolver(PostSchema),
     defaultValues: {
@@ -26,7 +28,16 @@ const PostForm = () => {
   });
 
   function onSubmit(values: z.infer<typeof PostSchema>) {
-    createPost(values);
+    createPost(values).then((data) => {
+      setSuccess(data?.success);
+    });
+
+    toast({
+      title: 'Posted',
+      description: `${success}`,
+    });
+
+    form.reset();
   }
   return (
     <Form {...form}>
