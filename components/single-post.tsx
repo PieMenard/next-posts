@@ -1,13 +1,12 @@
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle,
 } from '@/components/ui/card';
 import { getUserById } from '@/lib/data';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
+import { formatDistance } from 'date-fns';
 
 type PostProps = {
   id: string;
@@ -30,6 +29,9 @@ const SinglePost = async ({ postData }: { postData: PostProps }) => {
           <AvatarImage src={userData?.image || ''} alt="user avatar" />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
+        <p className="text-sm font-light ml-auto">
+          {formatDistance(new Date(postData.createdAt), new Date())}
+        </p>
       </CardFooter>
     </Card>
   );
